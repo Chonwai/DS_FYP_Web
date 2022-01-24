@@ -1,0 +1,9 @@
+zmq
+numpy
+redis
+gunicorn
+gevent
+supervisor
+flask
+schedule
+pandas

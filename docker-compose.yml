@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  web:
+    build: ./
+    ports:
+      - 80:8888
+    volumes:
+      - ./:/web
+      - ./gunicorn.conf:/etc/supervisor/gunicorn.conf
+      - ./supervisord.conf:/etc/supervisor/supervisord.conf
+    networks:
+      - humancam
+    depends_on:
+      - redis
+    # restart: always
+  redis:
+    image: "redis"
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data/:/data/
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - humancam
+    # restart: always
+networks:
+  humancam:
+    name: web_humancam
+    driver: bridge

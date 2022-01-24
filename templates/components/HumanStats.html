@@ -1,0 +1,41 @@
+<body>
+    <section class="mb-8">
+        <header>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold leading-tight text-gray-900">
+                    人流統計
+                </h1>
+            </div>
+        </header>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-1">
+                <div class="relative bg-white py-5 px-4 sm:py-6 sm:px-6 shadow rounded-lg overflow-hidden">
+                    <dt>
+                        <div class="absolute bg-indigo-500 rounded-md p-3">
+                            <!-- Heroicon name: outline/cursor-click -->
+                            <svg class="h-6 w-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="ml-16 text-sm font-medium text-gray-500 truncate">預測人流</p>
+                    </dt>
+                    <dd class="ml-16 flex items-baseline">
+                        <p id="people-out" class="text-2xl font-semibold text-gray-900">獲取數據中......</p>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                setInterval(() => {
+                    $.get($SCRIPT_ROOT + '/people_out', function (data) {
+                        $("#people-out").text(data);
+                    });
+                }, 3000)
+            });
+        </script>
+    </section>
+</body>

@@ -1,0 +1,8 @@
+node_modules
+**/__pycache__
+data/*
+supervisord.log
+storage/report/*
+.DS_Store
+**/.DS_Store
+/__pycache__
