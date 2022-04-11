@@ -3,23 +3,22 @@ from flask import Flask, render_template, Response
 from service.schedule import dashboardSchedule
 from service.schedule import ScheduleService
 import zmq
-import numpy as np
 import threading
 import json
 from time import sleep
 from utils import utils
 from config.cacha import config
 from routes.web.report import report
+from routes.web.area import area
 import redis
-# from dotenv import load_dotenv
 
-# load_dotenv()
 os.environ['TZ'] = 'Asia/Taipei'
 
 
 app = Flask(__name__)
 app.config.from_mapping(config)
 app.register_blueprint(report)
+app.register_blueprint(area)
 
 r = redis.Redis(host='redis', port=6379, decode_responses=True)
 r.set('people_in', utils.Utils.getPeopleIn())
@@ -55,18 +54,6 @@ def getHumanCounterFrames():
                   (currentPeopleOut - lastPeopleOut))
         lastPeopleIn = currentPeopleIn
         lastPeopleOut = currentPeopleOut
-
-
-def getAgeGenderFrame():
-    context = zmq.Context()
-    socket = context.socket(zmq.PULL)
-    socket.connect("tcp://agd:5556")
-
-    response = json.loads(socket.recv())
-
-    while True:
-        response = json.loads(socket.recv())
-        r.set('base64AgeGenderFrame', response['frame'].split("'")[1])
 
 
 def fetchHumanCounterFrames():
@@ -113,12 +100,6 @@ def human_counter_video_feed():
     return Response(fetchHumanCounterFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/age_gender_video_feed')
-def age_gender_video_feed():
-    # Video streaming route. Put this in the src attribute of an img tag
-    return Response(fetchAgeGenderFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
 @app.route('/')
 def index():
     """Video streaming home page."""
@@ -127,9 +108,7 @@ def index():
 
 if __name__ == '__main__':
     humanCounterframeThread = threading.Thread(target=getHumanCounterFrames)
-    ageGenderFrameThread = threading.Thread(target=getAgeGenderFrame)
     dashboardScheduleThread = threading.Thread(target=dashboardSchedule)
     humanCounterframeThread.start()
-    ageGenderFrameThread.start()
     dashboardScheduleThread.start()
-    app.run(debug=True, host='0.0.0.0', port=8888, use_reloader=False)
+    app.run(debug=True, host='0.0.0.0', port=8888, use_reloader=True)

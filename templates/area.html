@@ -1,0 +1,110 @@
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Video Streaming Demonstration</title>
+        <script
+            src="{{url_for('static', filename='js/jquery-3.6.0.min.js')}}"
+            type="text/javascript"
+        ></script>
+        <script type="text/javascript">
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        </script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div>
+            <div
+                x-data="{ isOpen: false }"
+                @keydown.window.escape="isOpen = false"
+                class="min-h-screen bg-gray-100"
+            >
+                <!-- Import Header Component -->
+                {% include 'components/Sidebar.html' %}
+                <div class="md:pl-64 flex flex-col flex-1">
+                    <div class="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-gray-100">
+                        <button
+                            type="button"
+                            @click="isOpen = !isOpen"
+                            class="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                        >
+                            <span class="sr-only">Open sidebar</span>
+                            <!-- Heroicon name: outline/menu -->
+                            <svg
+                                class="h-6 w-6"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    <main class="flex-1 p-8">
+                        <section class="mb-8">
+                            <header>
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <h1 class="text-3xl font-bold leading-tight text-gray-900">
+                                        Update the Dangerous Area
+                                    </h1>
+                                </div>
+                            </header>
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <!-- Replace with your content -->
+                                <div
+                                    class="px-4 py-8 md:px-0 flex lg:flex-row flex-col justify-center items-center align-center"
+                                >
+                                    <div
+                                        class="flex-1 flex justify-center items-center mb-2 lg:mr-2 p-4 border-4 border-dashed border-gray-200 rounded-lg"
+                                    >
+                                        <canvas width="100%" height="auto"></canvas>
+                                    </div>
+                                </div>
+                                <button
+                                    class="w-auto mr-4 max-w-xs font-bold shadow-sm rounded-lg px-8 py-4 bg-gray-600 text-white"
+                                    type="button"
+                                    onclick="resetTheArea()"
+                                >
+                                    Reset the Area
+                                </button>
+                                <button
+                                    class="w-auto max-w-xs font-bold shadow-sm rounded-lg px-8 py-4 bg-indigo-600 text-white"
+                                    type="button"
+                                    onclick="saveTheArea()"
+                                >
+                                    Save the Area
+                                </button>
+                                <!-- /End replace -->
+                            </div>
+                        </section>
+                    </main>
+                </div>
+            </div>
+            <!-- Import Footer Component -->
+            {% include 'components/Footer.html' %}
+            <script
+                src="{{url_for('static', filename='js/firebase.js')}}"
+                type="text/javascript"
+            ></script>
+            <script
+                src="{{url_for('static', filename='js/writeArea.js')}}"
+                type="text/javascript"
+            ></script>
+            <script
+                src="{{url_for('static', filename='js/alpine.min.js')}}"
+                type="text/javascript"
+            ></script>
+        </div>
+    </body>
+</html>
