@@ -2,12 +2,15 @@ var canvas = $('canvas');
 var context = canvas[0].getContext('2d');
 var imageObj = new Image();
 
+const WIDTH = 1280
+const HEIGHT = 720
+
 imageObj.onload = function () {
     $(canvas).attr({
-        width: 920,
-        height: 540
+        width: WIDTH,
+        height: HEIGHT
     });
-    context.drawImage(imageObj, 0, 0, 920, 540);
+    context.drawImage(imageObj, 0, 0, WIDTH, HEIGHT);
 };
 
 imageObj.src = 'human_counter_video_feed';
@@ -48,7 +51,7 @@ function drawPoints() {
 
 function redraw() {
     canvas.width = canvas.width; // Clears the canvas
-    context.drawImage(imageObj, 0, 0, 920, 540);
+    context.drawImage(imageObj, 0, 0, WIDTH, HEIGHT);
     drawPolygon();
     drawPoints();
 }
@@ -88,7 +91,7 @@ async function saveTheArea() {
         if (data == 'Success') {
             setInterval(() => {
                 document.location.href = '/';
-            }, 1000);
+            }, 5000);
         }
     }, 'text');
 }
